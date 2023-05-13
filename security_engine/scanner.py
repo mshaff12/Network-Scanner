@@ -1,6 +1,7 @@
 from scapy.all import ARP, Ether, srp
 import json
 import socket
+from pysnmp.hlapi import *
 
 def scan_network(ip_range):
     # Create an ARP request packet
@@ -16,8 +17,9 @@ def scan_network(ip_range):
         mac = received.hwsrc
         # password = input(f"Enter the password for device with IP {ip}: ")
         protocol = get_protocol(ip)
+        firmware = get_firmware_version(received.psrc)
         name = get_device_name(ip)
-        devices.append({'name':name, 'ip': ip, 'mac': mac, 'protocol': protocol})
+        devices.append({'name':name, 'ip': ip, 'mac': mac, 'protocol': protocol, 'firmware': firmware})
 
 
     # Return the list of discovered devices
@@ -43,6 +45,16 @@ def get_device_name(ip):
         return hostname
     except socket.herror:
         return 'Unknown'
+    
+def get_firmware_version(ip):
+    # Implement logic to retrieve the firmware version for a given IP
+    # You may need to use specific device-specific methods or protocols to obtain the firmware information
+    # This could involve querying the device's API, accessing the device's web interface, or using SNMP, depending on the device
+
+    # Placeholder code to demonstrate retrieving firmware version
+    firmware_version = "v1.0.0"
+
+    return firmware_version
     
 # Define the IP range of your network
 ip_range = "192.168.4.1/24"

@@ -13,9 +13,3 @@
 7. Ongoing Updates and Support: Maintain an up-to-date vulnerability database and regularly update the scanning engine to keep pace with emerging threats and new device vulnerabilities. Provide continuous support to users, including alerts for critical vulnerabilities and recommendations for remediation.
 
 8. User Interface and Experience: Develop a user-friendly web interface that allows users to initiate scans, view reports, track device security status, and manage their IoT devices conveniently. Consider providing additional features such as device monitoring, security notifications, or integration with other security tools.
-
-Remember, building such a web service requires expertise in IoT protocols, cybersecurity, and web application development. Conduct thorough testing, including ethical hacking and rigorous security assessments, to ensure the reliability and effectiveness of your scanning service.
-
-It's also important to consider the legal and ethical implications of scanning users' IoT devices, such as obtaining user consent and adhering to privacy regulations.
-
-Overall, with careful planning, a strong technical foundation, and a focus on user experience, it is feasible to develop a web service that scans a household's IoT devices and identifies security vulnerabilities.
