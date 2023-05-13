@@ -1,4 +1,6 @@
 from scapy.all import ARP, Ether, srp
+import json
+import socket
 
 def scan_network(ip_range):
     # Create an ARP request packet
@@ -10,11 +12,38 @@ def scan_network(ip_range):
     # Process the responses
     devices = []
     for sent, received in result:
-        devices.append({'ip': received.psrc, 'mac': received.hwsrc})
+        ip = received.psrc
+        mac = received.hwsrc
+        # password = input(f"Enter the password for device with IP {ip}: ")
+        protocol = get_protocol(ip)
+        name = get_device_name(ip)
+        devices.append({'name':name, 'ip': ip, 'mac': mac, 'protocol': protocol})
+
 
     # Return the list of discovered devices
     return devices
 
+def get_protocol(ip):
+    # Perform a simple port-based protocol detection
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.settimeout(1)
+            result = s.connect_ex((ip, 80))
+            if result == 0:
+                return 'HTTP'
+            else:
+                return 'HTTPS'
+    except socket.error:
+        return 'Unknown'
+
+def get_device_name(ip):
+    # Retrieve the device name using DNS resolution
+    try:
+        hostname = socket.gethostbyaddr(ip)[0]
+        return hostname
+    except socket.herror:
+        return 'Unknown'
+    
 # Define the IP range of your network
 ip_range = "192.168.4.1/24"
 
@@ -23,4 +52,7 @@ iot_devices = scan_network(ip_range)
 
 # Print the discovered IoT devices
 for device in iot_devices:
-    print(f"IoT Device - IP: {device['ip']}, MAC: {device['mac']}")
+    print(f"IoT Device - Name: {device['name']}, IP: {device['ip']}, MAC: {device['mac']}, Prtocol: {device['protocol']}")
+
+with open("iot_devices.json", "w") as f:
+    json.dump(iot_devices, f)
